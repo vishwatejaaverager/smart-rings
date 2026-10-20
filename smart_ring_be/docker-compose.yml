@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smart_ring_app:latest
+    container_name: smart_ring_backend
+    restart: unless-stopped
+    command: uvicorn src.backend.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - START_HEADLESS_LOOP=true
+      - CORE_MODEL_GAZE_ENABLED=False
+      - CORE_MODEL_SAM_ENABLED=False
+      - CORE_MODEL_SAM3_ENABLED=False
+      - CORE_MODEL_YOLO_WORLD_ENABLED=False
+      - OLLAMA_URL=http://host.docker.internal:11434/api/generate
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./models:/app/models
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - smart_ring_net
+
+  alexa:
+    image: smart_ring_app:latest
+    container_name: smart_ring_alexa
+    restart: unless-stopped
+    command: streamlit run src/ui/dashboard.py --server.port 8501 --server.address 0.0.0.0 --theme.base dark
+    ports:
+      - "8501:8501"
+    environment:
+      - FASTAPI_BASE_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - smart_ring_net
+
+networks:
+  smart_ring_net:
+    driver: bridge

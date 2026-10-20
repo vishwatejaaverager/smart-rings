@@ -1,0 +1,18 @@
+[
+  {
+    "query": "Is this person wearing a blue shirt? Answer YES or NO.",
+    "answer": "NO"
+  },
+  {
+    "query": "Is this person wearing black pants? Answer YES or NO.",
+    "answer": "YES"
+  },
+  {
+    "query": "Is this person walking? Answer YES or NO.",
+    "answer": "NO"
+  },
+  {
+    "query": "Is this person holding or carrying a package or box? Answer YES or NO.",
+    "answer": "NO"
+  }
+]

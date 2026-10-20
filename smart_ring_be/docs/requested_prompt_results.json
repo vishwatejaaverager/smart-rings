@@ -1,0 +1,262 @@
+[
+  {
+    "prompt": "Alert me if a person in a blue shirt approaches the door",
+    "expected_source": "person",
+    "status": "PASS",
+    "rule": {
+      "id": "person_in_blue_shirt",
+      "source": "person",
+      "vlm_query": "Is this person wearing a blue shirt? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert me if someone wearing black pants is seen",
+    "expected_source": "person",
+    "status": "PASS",
+    "rule": {
+      "id": "person_wearing_black_pants",
+      "source": "person",
+      "vlm_query": "Is this person wearing black pants? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert if a person is seen walking towards the door",
+    "expected_source": "person",
+    "status": "PASS",
+    "rule": {
+      "id": "person_walking_posture",
+      "source": "person",
+      "vlm_query": "Is this person walking? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert me if a person is picking up or carrying a box",
+    "expected_source": "person",
+    "status": "PASS",
+    "rule": {
+      "id": "person_carrying_box",
+      "source": "person",
+      "vlm_query": "Is this person holding or carrying a package or box? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert me whenever a package disappears",
+    "expected_source": "package_count",
+    "status": "PASS",
+    "rule": {
+      "id": "package_stolen",
+      "source": "package_count",
+      "vlm_query": null,
+      "expected_answer": null,
+      "derive": {
+        "type": "delta",
+        "keep": "negative"
+      },
+      "aggregate": {
+        "fn": "latest",
+        "window": {
+          "type": "always"
+        }
+      },
+      "compare": {
+        "op": "<",
+        "value": 0
+      },
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 0.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert me if package count drops below 2",
+    "expected_source": "package_count",
+    "status": "PASS",
+    "rule": {
+      "id": "package_count_below_2",
+      "source": "package_count",
+      "vlm_query": null,
+      "expected_answer": null,
+      "derive": {
+        "type": "identity",
+        "keep": "all"
+      },
+      "aggregate": {
+        "fn": "latest",
+        "window": {
+          "type": "always"
+        }
+      },
+      "compare": {
+        "op": "<",
+        "value": 2
+      },
+      "alert": {
+        "fire": "once_per_episode",
+        "cooldown_seconds": 0.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert me when two or more packages arrive",
+    "expected_source": "package_count",
+    "status": "PASS",
+    "rule": {
+      "id": "two_or_more_packages_arrived",
+      "source": "package_count",
+      "vlm_query": null,
+      "expected_answer": null,
+      "derive": {
+        "type": "delta",
+        "keep": "positive"
+      },
+      "aggregate": {
+        "fn": "sum",
+        "window": {
+          "type": "since_monitoring_started"
+        }
+      },
+      "compare": {
+        "op": ">=",
+        "value": 2
+      },
+      "alert": {
+        "fire": "once_ever",
+        "cooldown_seconds": 0.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert if package count decreases",
+    "expected_source": "package_count",
+    "status": "PASS",
+    "rule": {
+      "id": "package_count_decreased",
+      "source": "package_count",
+      "vlm_query": null,
+      "expected_answer": null,
+      "derive": {
+        "type": "delta",
+        "keep": "negative"
+      },
+      "aggregate": {
+        "fn": "latest",
+        "window": {
+          "type": "always"
+        }
+      },
+      "compare": {
+        "op": "<",
+        "value": 0
+      },
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 0.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert if a white car arrives in the driveway",
+    "expected_source": "car",
+    "status": "PASS",
+    "rule": {
+      "id": "white_car_arrival",
+      "source": "car",
+      "vlm_query": "Is this a white vehicle? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert if a delivery truck or van is detected",
+    "expected_source": "car",
+    "status": "PASS",
+    "rule": {
+      "id": "delivery_truck_or_van_detected",
+      "source": "car",
+      "vlm_query": "Is this a delivery truck or van? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "every_time",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Alert if a car with license plate 7ABC123 arrives",
+    "expected_source": "car",
+    "status": "PASS",
+    "rule": {
+      "id": "plate_7abc123",
+      "source": "car",
+      "vlm_query": "Does this vehicle have a license plate showing '7ABC123'? Answer YES or NO.",
+      "expected_answer": "YES",
+      "derive": null,
+      "aggregate": null,
+      "compare": null,
+      "alert": {
+        "fire": "once_ever",
+        "cooldown_seconds": 5.0
+      }
+    }
+  },
+  {
+    "prompt": "Did anyone come before 2:00 PM?",
+    "required_tool": "query_history",
+    "status": "PASS",
+    "note": "query_history: Historical questions about past events are not supported."
+  },
+  {
+    "prompt": "Was a package delivered before noon?",
+    "required_tool": "query_history",
+    "status": "PASS",
+    "note": "query_history"
+  },
+  {
+    "prompt": "Alert me if my package does not arrive by 4:00 PM",
+    "required_tool": "set_deadline_alert",
+    "status": "PASS",
+    "note": "set_deadline_alert: Missed delivery deadline requests cannot be turned into immediate alerts."
+  }
+]

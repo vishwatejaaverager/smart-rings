@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Smart Ring TV matches snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#101A23",
+      "flex": 1,
+      "paddingBottom": 20,
+      "paddingHorizontal": 52,
+      "paddingTop": 32,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 32,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "borderColor": "#A7C6B7",
+            "borderRadius": 15,
+            "borderWidth": 2,
+            "height": 30,
+            "justifyContent": "center",
+            "width": 30,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "backgroundColor": "#A7C6B7",
+              "borderRadius": 5,
+              "height": 10,
+              "width": 10,
+            }
+          }
+        />
+      </View>
+      <Text
+        style={
+          {
+            "color": "#F4F3EC",
+            "fontSize": 25,
+            "fontWeight": "600",
+            "letterSpacing": -0.6,
+          }
+        }
+      >
+        Smart Ring
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#82919B",
+            "fontSize": 16,
+            "marginLeft": 10,
+          }
+        }
+      >
+        Home alerts
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 9,
+        }
+      }
+      testID="connection-status-badge"
+    >
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#B89E70",
+              "borderRadius": 4,
+              "height": 7,
+              "width": 7,
+            },
+            false,
+          ]
+        }
+      />
+      <Text
+        style={
+          {
+            "color": "#B2BFC4",
+            "fontSize": 15,
+          }
+        }
+        testID="connection-status"
+      >
+        Connecting
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "row",
+        "gap": 32,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#182731",
+            "borderRadius": 22,
+            "flex": 1.7,
+            "justifyContent": "center",
+            "padding": 32,
+          },
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 16,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderColor": "#3C5457",
+              "borderRadius": 32,
+              "borderWidth": 1,
+              "height": 64,
+              "justifyContent": "center",
+              "marginBottom": 12,
+              "width": 64,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#8EAF9E",
+                "borderRadius": 11,
+                "height": 22,
+                "width": 22,
+              }
+            }
+          />
+        </View>
+        <Text
+          style={
+            {
+              "color": "#ACC7B7",
+              "fontSize": 12,
+              "fontWeight": "600",
+              "letterSpacing": 2,
+            }
+          }
+        >
+          YOUR HOME, AT A GLANCE
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#F2F2EA",
+              "fontSize": 43,
+              "fontWeight": "500",
+              "letterSpacing": -1.4,
+              "lineHeight": 49,
+            }
+          }
+        >
+          All quiet for now.
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#A7B8BA",
+              "fontSize": 18,
+              "lineHeight": 27,
+              "maxWidth": 460,
+            }
+          }
+        >
+          Waiting to connect to your home server.
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flex": 1,
+          "paddingTop": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 16,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#E3E8E5",
+              "fontSize": 19,
+              "fontWeight": "500",
+            }
+          }
+        >
+          Recent activity
+        </Text>
+      </View>
+      <RCTScrollView
+        showsVerticalScrollIndicator={false}
+        style={
+          {
+            "flex": 1,
+          }
+        }
+      >
+        <View>
+          <View
+            style={
+              {
+                "paddingTop": 18,
+              }
+            }
+            testID="events-empty-state"
+          >
+            <Text
+              style={
+                {
+                  "color": "#A8B7BC",
+                  "fontSize": 18,
+                  "marginBottom": 9,
+                }
+              }
+            >
+              No events yet
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#71848E",
+                  "fontSize": 15,
+                  "lineHeight": 23,
+                }
+              }
+            >
+              Your latest home activity will be saved here.
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#617881",
+        "fontSize": 12,
+        "marginTop": 20,
+      }
+    }
+  >
+    A little more peace of mind.
+  </Text>
+</View>
+`;
