@@ -358,18 +358,91 @@ Important desktop-launcher behaviour:
 - Dashboard loop status describes the headless engine, not the separate desktop window.
 - Use `hybrid` for the combined visual/package rule workflow. The `model` and `workflow` modes are diagnostic count-processing paths and do not provide the same full visual-rule flow.
 
-### Optional: existing Docker deployment
+### Run with Docker Compose
 
-Docker is not required for the local setup above. The existing Compose file defines backend and dashboard services; it does not start the MCP server or Ollama.
+The project includes a Dockerfile and Docker Compose setup for the FastAPI backend and Streamlit command dashboard. You can use this instead of starting those two services manually. Run the commands below from the repository root unless noted otherwise.
+
+#### 1. Prepare credentials and local assets
+
+Install Docker with Docker Compose support and start the Docker engine. Create `smart_ring_be/.env` using your own credentials as described above.
+
+The current Dockerfile copies local assets during the build. Before building, provide:
+
+- `smart_ring_be/vids/theft.mp4`: your authorized test footage, used by the default headless monitor.
+- `smart_ring_be/models/`: the model directory; place the unified detector at `models/best.pt` for local package/person/car detection.
+- `smart_ring_be/yolo11s-seg.pt`: the additional weights file explicitly copied by the current Dockerfile.
+
+These local assets are excluded from Git. A fresh clone alone is therefore not enough to build and run the current image. See the model and footage preparation instructions above. For voice input, prepare a complete faster-whisper model in `smart_ring_be/models/whisper-base.en`; a model cached only on the host is not automatically visible inside the container.
+
+#### 2. Start Ollama on the host
+
+```bash
+ollama pull qwen2.5vl:3b
+ollama serve
+```
+
+If Ollama is already running, use that instance. Compose directs the backend to `http://host.docker.internal:11434/api/generate`. Ensure the host Ollama service accepts connections from Docker; a service listening only on host loopback may need its listen address adjusted for your Docker environment.
+
+Use container-visible paths in `.env`. For example, if you explicitly configure the voice model:
+
+```dotenv
+WHISPER_MODEL_PATH=/app/models/whisper-base.en
+ALERT_WEBHOOK_URL=http://127.0.0.1:8000/webhook/alert
+```
+
+The webhook address above is correct for an alert sent by the backend to its own HTTP endpoint inside the same container. Compose supplies the dashboard with `FASTAPI_BASE_URL=http://backend:8000` so it can reach the backend across the Compose network.
+
+#### 3. Build and start
+
+Stop any manually started backend/dashboard that already occupies ports 8000 or 8501, then run:
 
 ```bash
 cd smart_ring_be
 docker compose up -d --build
 ```
 
-The configuration uses `host.docker.internal` for host Ollama and mounts `./models` into the backend. Configure keys, model paths, webhook addressing, and host/device networking for your environment. The checked-in dashboard service currently forces a dark theme, while the redesigned dashboard has a light theme configuration.
+| Compose service | Container | Address / role |
+| --- | --- | --- |
+| `backend` | `smart_ring_backend` | Backend at `http://localhost:8000`; API docs at `/docs`; headless monitoring enabled. |
+| `alexa` | `smart_ring_alexa` | Streamlit command dashboard at `http://localhost:8501`; starts after the backend health check succeeds. |
 
-Application source is baked into the image, so host edits do not update running containers automatically. Rebuild/recreate when deliberately deploying changes. A container restart loses process-local rules and history. Source-run and container-run services cannot both bind the same host ports. This guide does not assume an old running image contains the latest UI, voice runtime, tracking, or MCP changes.
+The Compose service name `alexa` refers to the project's browser command interface. It does not deploy an Alexa skill. The current dashboard command forces a dark theme.
+
+#### 4. Inspect, update, and stop
+
+From `smart_ring_be`:
+
+```bash
+# Inspect service status and logs
+docker compose ps
+docker compose logs --tail=100 backend alexa
+
+# Follow backend output during a monitoring session
+docker compose logs -f backend
+
+# Rebuild and recreate after source or dependency changes
+docker compose up -d --build --force-recreate
+
+# Stop and remove the service containers
+docker compose down
+```
+
+Application source is copied into the image rather than mounted live. Restarting an old container does not apply host source changes; rebuild and recreate it. The backend mounts `./models` at `/app/models`, but rules, event history, and deadlines are still held in process memory and are lost when the backend process restarts. Docker does not add database persistence.
+
+#### MCP and Fire TV with Docker
+
+The current Compose file does **not** start MCP, Ollama, or the Fire TV application. With the backend container running, start MCP separately on the host using the Python environment prepared above:
+
+```bash
+cd smart_ring_be
+source .venv/bin/activate
+MCP_BACKEND_URL=http://127.0.0.1:8000 python mcp/server.py
+```
+
+If already inside `smart_ring_be`, omit the `cd` command. The MCP endpoint is `http://127.0.0.1:8002/mcp`.
+
+Build and launch the Fire TV application separately using the next section. Configure its WebSocket URL as `ws://YOUR_DOCKER_HOST_LAN_IP:8000/ws/alerts`; `localhost` on a physical TV refers to the TV itself.
+
 
 ## Fire TV application
 
