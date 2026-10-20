@@ -1,5 +1,6 @@
 # Smart Rings
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ### Tell your home what to watch for.
 
 Smart Rings is a smart-home monitoring prototype that turns natural-language instructions into camera-based automation rules and sends relevant alerts to a Fire TV application. A user can type a command, record it through the browser microphone, or ask an MCP-connected assistant to create an alert.
@@ -786,7 +787,7 @@ Publish licensed demo assets or retrieval instructions, portable configuration, 
 
 Contributions should state the user problem, implementation approach, configuration changes, and validation performed. Add meaningful tests for behaviour changes, especially tracking, alert transitions, temporal semantics, and transport compatibility. Use synthetic or explicitly licensed footage for tests; do not commit private household recordings, credentials, or cached model directories.
 
-This project is intended to be developed openly. A project-level license has not yet been added to this checkout. Maintainers must choose and publish an appropriate `LICENSE` before presenting the repository as a licensed open-source release. Third-party dependencies, trained weights, datasets, and footage retain their own terms; review those separately, including Ultralytics' applicable licensing requirements.
+Smart Rings is open-source software released under the [MIT License](LICENSE). You may use, modify, and distribute the project under its terms. Third-party dependencies, trained weights, datasets, and footage retain their own licenses and terms, including those applicable to Ultralytics components.
 
 Before publishing, audit embedded credential fallbacks as well as `.env` and logs. Configure your own Roboflow key through the environment. A legacy embedded fallback has been removed; rotate any credentials previously exposed during development. Never assume that a new project license grants rights to third-party video or model assets.
 
